@@ -1,28 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
-from cms.models import Category, Product, ProductImage
+
+from cms.models import AboutUs, ContactDetail, HeroContent, SiteContent, SocialDetail
 
 # Register your models here.
 
 User = get_user_model()
 
-class CategoryAdmin(admin.ModelAdmin):
-    pass
+admin.site.register(SiteContent)
 
+admin.site.register(HeroContent)
 
-class ProductImageInline(admin.TabularInline):
-    model = ProductImage
-    classes = ("collapse",)
+admin.site.register(ContactDetail)
 
+admin.site.register(SocialDetail)
 
-class ProductAdmin(admin.ModelAdmin):
-    inlines = [ProductImageInline]
-    pass
-
-
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Product, ProductAdmin)
-
-admin.site.unregister(User)
-admin.site.unregister(Group)
+admin.site.register(AboutUs)

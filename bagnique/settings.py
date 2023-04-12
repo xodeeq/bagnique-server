@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,12 +27,14 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = [config('STAGING_BASE_URL'),]
+ALLOWED_HOSTS = [config('SERVER_BASE_URL'), '198.211.99.20', 'localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,14 +43,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third-party
+    'rest_framework',
+    'rest_framework_api_key',
     'cloudinary_storage',
     'cloudinary',
 
     # Custom
-    'cms'
+    'cms',
+    'commerce',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -140,10 +148,43 @@ CLOUDINARY_STORAGE = {
     'API_KEY': config('CLOUDINARY_API_KEY'),  # required
     'API_SECRET': config('CLOUDINARY_API_SECRET'),  # required
     'SECURE': True,
-    'MEDIA_TAG': 'bagnique',
+    'MEDIA_TAG': config('CLOUDINARY_MEDIA_TAG'),
 }
 
 
 # For cloudinary
+
 MEDIA_URL = '/media/'  # or any prefix you choose
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+# API Key Settings
+# https://pypi.org/project/djangorestframework-api-key/
+
+API_KEY_CUSTOM_HEADER = config('DRF_API_KEY_HEADER')
+
+# Extra client conf
+API_BASE_URL = config('API_BASE_URL')
+
+
+# CORS Settings
+# https://pypi.org/project/django-cors-headers/
+
+CORS_ALLOWED_ORIGINS = [config('CLIENT_BASE_URL'),]
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    config('DRF_API_KEY_HEADER'),
+]
+
+
+# DRF and DRF API Token settings
+# https://www.django-rest-framework.org/#example
+# https://florimondmanca.github.io/djangorestframework-api-key/guide/#setting-permissions
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework_api_key.permissions.HasAPIKey',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
