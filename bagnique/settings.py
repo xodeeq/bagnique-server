@@ -13,6 +13,9 @@ import os
 from pathlib import Path
 from decouple import config
 from corsheaders.defaults import default_headers
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -143,19 +146,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Cloudinary settings
 # https://github.com/klis87/django-cloudinary-storage
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),  # required
-    'API_KEY': config('CLOUDINARY_API_KEY'),  # required
-    'API_SECRET': config('CLOUDINARY_API_SECRET'),  # required
-    'SECURE': True,
-    'MEDIA_TAG': config('CLOUDINARY_MEDIA_TAG'),
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),  # required
+#     'API_KEY': config('CLOUDINARY_API_KEY'),  # required
+#     'API_SECRET': config('CLOUDINARY_API_SECRET'),  # required
+#     'SECURE': True,
+#     'MEDIA_TAG': config('CLOUDINARY_MEDIA_TAG'),
+# }
+
+
+cloudinary.config( 
+  cloud_name = config('CLOUDINARY_CLOUD_NAME'), 
+  api_key = config('CLOUDINARY_API_KEY'), 
+  api_secret = config('CLOUDINARY_API_SECRET'),
+  api_proxy = config('CLOUDINARY_API_SECRET'),
+  media_tag = config('CLOUDINARY_MEDIA_TAG'),
+)
 
 
 # For cloudinary
 
 MEDIA_URL = '/media/'  # or any prefix you choose
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 # API Key Settings

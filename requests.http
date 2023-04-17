@@ -5,7 +5,7 @@ Client-Api-Key: mFNjSA0S.ZqSleaulG1yKuNChpOGepTQaYQxXtBO9
 
 
 # GET About Us
-GET http://localhost:8005/api/v1/cms/about-us HTTP/1.1
+GET https://xal.pythonanywhere.com/api/v1/cms/about-us HTTP/1.1
 Content-Type: application/json
 Client-Api-Key: mFNjSA0S.ZqSleaulG1yKuNChpOGepTQaYQxXtBO9
 
@@ -32,6 +32,26 @@ Client-Api-Key: mFNjSA0S.ZqSleaulG1yKuNChpOGepTQaYQxXtBO9
 GET http://localhost:8005/api/v1/commerce/product/2 HTTP/1.1
 Content-Type: application/json
 Client-Api-Key: mFNjSA0S.ZqSleaulG1yKuNChpOGepTQaYQxXtBO9
+
+
+# POST Order
+POST http://localhost:8005/api/v1/commerce/place-order HTTP/1.1
+Content-Type: application/json
+Client-Api-Key: mFNjSA0S.ZqSleaulG1yKuNChpOGepTQaYQxXtBO9
+
+{
+    "name": "Babatunde Adenowo",
+    "email": "xodeeq@yahoo.com",
+    "phone": "+2348182027680",
+    "city": "Kansas",
+    "state": "Texas",
+    "zip_code": "0000000",
+    "address": "Block 41, Hamphire close.",
+    "order_products": [
+        { "product": 1, "quantity": 2 },
+        { "product": 2, "quantity": 1 }
+    ]
+}
 
 
 # POST Order

@@ -9,10 +9,10 @@ User = get_user_model()
 
 admin.site.register(SiteContent)
 
-admin.site.register(HeroContent)
+# admin.site.register(HeroContent)
 
-admin.site.register(ContactDetail)
+# admin.site.register(ContactDetail)
 
-admin.site.register(SocialDetail)
+# admin.site.register(SocialDetail)
 
-admin.site.register(AboutUs)
+# admin.site.register(AboutUs)
