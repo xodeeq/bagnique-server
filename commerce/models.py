@@ -1,7 +1,25 @@
 from django.db import models
+from django.conf import settings
 from cloudinary.models import CloudinaryField
 
 # Create your models here.
+
+
+
+
+# class CloudinaryField(BaseCloudinaryField):
+#     def upload_options(self, model_instance):
+#         return {
+#             'public_id': model_instance.__str__,
+#             'folder': 'bagnique/product-images/',
+#             'unique_filename': False,
+#             'overwrite': True,
+#             'resource_type': 'image',
+#             'tags': ['product', 'bag'],
+#             'invalidate': True,
+#             'quality': 'auto:eco',
+#         }
+
 
 
 class Category(models.Model):
@@ -37,7 +55,11 @@ class ProductImage(models.Model):
     file = CloudinaryField('image')
 
     def __str__(self):
-        return str(self.product)
+        return '{} img-{}'.format(str(self.product), str(self.id))
+    
+    def get_image_url(self):
+        print(self.file)
+        return'{}{}'.format(settings.CLOUDINARY_ROOT_URL, self.file)
 
 
 class Order(models.Model):

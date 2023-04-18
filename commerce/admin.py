@@ -15,6 +15,8 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     classes = ("collapse",)
+    extra = 0
+    max_num = 4
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -25,6 +27,7 @@ class ProductAdmin(admin.ModelAdmin):
 class OrderProductInline(admin.TabularInline):
     model = OrderProduct
     classes = ("collapse",)
+    extra = 0
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

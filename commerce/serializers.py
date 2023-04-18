@@ -1,13 +1,18 @@
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
+from django.conf import settings
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, SerializerMethodField
 
 
 from commerce.models import Category, Order, OrderProduct, Product, ProductImage
 
 
 class ProductImageSerializer(ModelSerializer):
+    image_url = SerializerMethodField()
     class Meta:
         model = ProductImage
         fields = '__all__'
+
+    def get_image_url(self, obj):
+        return '{}{}'.format(settings.CLOUDINARY_ROOT_URL, obj.file)
 
 
 class ProductSerializer(ModelSerializer):

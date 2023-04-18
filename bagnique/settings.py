@@ -14,6 +14,14 @@ from pathlib import Path
 from decouple import config
 from corsheaders.defaults import default_headers
 import cloudinary
+# https://www.pythonanywhere.com/forums/topic/31602/
+cloudinary.config( 
+  cloud_name = config('CLOUDINARY_CLOUD_NAME'), 
+  api_key = config('CLOUDINARY_API_KEY'), 
+  api_secret = config('CLOUDINARY_API_SECRET'),
+  api_proxy = config('CLOUDINARY_API_PROXY'),
+  media_tag = config('CLOUDINARY_MEDIA_TAG'),
+)
 import cloudinary.uploader
 import cloudinary.api
 
@@ -48,7 +56,6 @@ INSTALLED_APPS = [
     # Third-party
     'rest_framework',
     'rest_framework_api_key',
-    'cloudinary_storage',
     'cloudinary',
 
     # Custom
@@ -155,18 +162,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # }
 
 
-cloudinary.config( 
-  cloud_name = config('CLOUDINARY_CLOUD_NAME'), 
-  api_key = config('CLOUDINARY_API_KEY'), 
-  api_secret = config('CLOUDINARY_API_SECRET'),
-  api_proxy = config('CLOUDINARY_API_SECRET'),
-  media_tag = config('CLOUDINARY_MEDIA_TAG'),
-)
-
 
 # For cloudinary
 
 MEDIA_URL = '/media/'  # or any prefix you choose
+CLOUDINARY_ROOT_URL = config('CLOUDINARY_ROOT_URL')
 # DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
@@ -182,10 +182,9 @@ API_BASE_URL = config('API_BASE_URL')
 # CORS Settings
 # https://pypi.org/project/django-cors-headers/
 
-CORS_ALLOWED_ORIGINS = [config('CLIENT_BASE_URL'),]
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    config('DRF_API_KEY_HEADER'),
-]
+CORS_ALLOWED_ORIGINS = config('CLIENT_BASE_URL').split(',')
+CORS_ALLOW_HEADERS = list(default_headers) +  config('CLIENT_API_KEY_HEADERS').split(',')
+print(CORS_ALLOW_HEADERS)
 
 
 # DRF and DRF API Token settings
@@ -198,5 +197,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework_api_key.permissions.HasAPIKey',
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'utils.renderers.CustomJSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ]
 }
