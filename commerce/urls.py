@@ -1,13 +1,15 @@
 from django.urls import path
 
-from commerce.views import GetCategoryProductsView, GetProductDetailView, GetProductsView, PostOrderView
+from commerce.views import CustomerFeedbackView, GetCategoryProductsView, GetProductDetailView, GetProductsView, PostOrderView
 
 
 app_name = "commerce"
 
 urlpatterns = [
     path('products', GetProductsView.as_view(), name='products'),
-    path('product-category/<int:category_id>/', GetCategoryProductsView.as_view(), name='product-category'),
-    path('product/<int:id>/', GetProductDetailView.as_view(), name='product'),
+    path('product-category/<int:category_id>',
+         GetCategoryProductsView.as_view(), name='product-category'),
+    path('product/<int:id>', GetProductDetailView.as_view(), name='product'),
     path('place-order', PostOrderView.as_view(), name='place-order'),
+    path('feedback', CustomerFeedbackView.as_view(), name='customer-feedback'),
 ]

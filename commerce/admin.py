@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from commerce.models import Category, Order, OrderProduct, Product, ProductImage
+from commerce.models import Category, CustomerFeedback, DeliverySchedule, Order, OrderProduct, Product, ProductImage
 
 # Register your models here.
 
@@ -29,9 +29,21 @@ class OrderProductInline(admin.TabularInline):
     classes = ("collapse",)
     extra = 0
 
+
+class DeliveryScheduleInline(admin.TabularInline):
+    model = DeliverySchedule
+    classes = ("collapse",)
+    extra = 0
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    inlines = [OrderProductInline]
+    inlines = [OrderProductInline, DeliveryScheduleInline]
+    pass
+
+
+@admin.register(CustomerFeedback)
+class CustomerFeedbackAdmin(admin.ModelAdmin):
     pass
 
 

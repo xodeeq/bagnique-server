@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from cms.models import HeroContent, SiteContent
 
-from cms.serializers import AboutUsSerializer, ContactDetailSerializer, HeroContentSerializer, SocialInfoSerializer
+from cms.serializers import AboutUsSerializer, BusinessInfoSerializer, HeroContentSerializer, SocialInfoSerializer
 from commerce.models import Category
 from commerce.serializers import CategorySerializer
 
@@ -15,16 +15,14 @@ class GetHeroContentView(RetrieveAPIView):
 
     def get_object(self):
         return SiteContent.objects.filter(is_active=True).first()
-    
 
 
-class GetContactDetailView(RetrieveAPIView):
+class GetBusinessInfoView(RetrieveAPIView):
     queryset = SiteContent.objects.all()
-    serializer_class = ContactDetailSerializer
+    serializer_class = BusinessInfoSerializer
 
     def get_object(self):
         return SiteContent.objects.filter(is_active=True).first()
-    
 
 
 class GetSocialInfoView(RetrieveAPIView):
@@ -33,7 +31,7 @@ class GetSocialInfoView(RetrieveAPIView):
 
     def get_object(self):
         return SiteContent.objects.filter(is_active=True).first()
-    
+
 
 class GetAboutUsView(RetrieveAPIView):
     queryset = SiteContent.objects.all()

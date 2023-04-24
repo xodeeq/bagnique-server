@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -24,10 +25,11 @@ class SiteContent(models.Model):
     """Details for client-side about us section"""
     short_about_us = models.CharField(max_length=200, blank=True, null=True)
     long_about_us = models.TextField()
+    buniess_image = CloudinaryField('buniess image', blank=True, null=True)
 
     def __str__(self):
         if self.is_active:
-            return "Active Hero Content";
+            return "Active Hero Content"
         else:
             return "In-active Hero Content"
 
@@ -41,12 +43,12 @@ class HeroContent(models.Model):
 
     def __str__(self):
         if self.is_active:
-            return "Active Hero Content";
+            return "Active Hero Content"
         else:
             return "In-active Hero Content"
 
 
-class ContactDetail(models.Model):
+class BusinessInfo(models.Model):
     """Contact details to be displayed on the client side"""
     email_address = models.EmailField(max_length=100)
     phone = models.CharField(max_length=20)

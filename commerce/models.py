@@ -5,8 +5,6 @@ from cloudinary.models import CloudinaryField
 # Create your models here.
 
 
-
-
 # class CloudinaryField(BaseCloudinaryField):
 #     def upload_options(self, model_instance):
 #         return {
@@ -21,11 +19,12 @@ from cloudinary.models import CloudinaryField
 #         }
 
 
-
 class Category(models.Model):
     title = models.CharField(max_length=18)
-    is_main = models.BooleanField(default=False, help_text="To be displayed in the hero section")
-    is_top = models.BooleanField(default=False, help_text="To be displayed on website header")
+    is_main = models.BooleanField(
+        default=False, help_text="To be displayed in the hero section")
+    is_top = models.BooleanField(
+        default=False, help_text="To be displayed on website header")
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -40,26 +39,27 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     available_quantity = models.PositiveSmallIntegerField()
-    parent_product = models.ForeignKey("self", on_delete=models.SET_NULL, related_name="variations", blank=True, null=True)
-    
+    parent_product = models.ForeignKey(
+        "self", on_delete=models.SET_NULL, related_name="variations", blank=True, null=True)
 
     def __str__(self):
         return self.title
-    
+
     def out_of_stock(self):
         return self.available_quantity < 1
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_images")
-    file = CloudinaryField('image')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="product_images")
+    file = CloudinaryField('product image')
 
     def __str__(self):
         return '{} img-{}'.format(str(self.product), str(self.id))
-    
+
     def get_image_url(self):
         print(self.file)
-        return'{}{}'.format(settings.CLOUDINARY_ROOT_URL, self.file)
+        return '{}{}'.format(settings.CLOUDINARY_ROOT_URL, self.file)
 
 
 class Order(models.Model):
@@ -83,3 +83,22 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return str(self.product) + " (" + str(self.quantity) + ")"
+
+
+class DeliverySchedule(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    available_from = models.DateField(blank=True, null=True)
+    available_to = models.DateField(blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
+
+
+class CustomerFeedback(models.Model):
+    """Contact details to be displayed on the client side"""
+    name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=20)
+    email_address = models.EmailField(max_length=100)
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.subject[:20]
