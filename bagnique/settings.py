@@ -182,7 +182,7 @@ API_BASE_URL = config('API_BASE_URL')
 # CORS Settings
 # https://pypi.org/project/django-cors-headers/
 
-CORS_ALLOWED_ORIGINS = config('CLIENT_BASE_URL').split(',')
+CORS_ALLOWED_ORIGINS = config('CLIENT_BASE_URLS').split(',')
 CORS_ALLOW_HEADERS = list(default_headers) +  config('CLIENT_API_KEY_HEADERS').split(',')
 
 
